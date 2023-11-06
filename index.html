@@ -12,12 +12,17 @@
    <button onclick="Telegram.WebApp.sendData('Test Data!')">Test button</button><br><br>
    <button onclick="Telegram.WebApp.MainButton.show()">Show button</button><br><br>
     <button onclick="myFunction()">Copy WebApp Object</button><br><br>
+     <button onclick="scanQr()">Scan QR</button><br><br>
     <script>
         function myFunction() {
           var copyText = JSON.stringify(window.Telegram.WebApp);
           navigator.clipboard.writeText(copyText);
-          alert("Copied window.Telegram.WebApp Object");
+          alert("Copied window.Telegram.WebApp Object")
+            	
             }
+        fucnction scanQr() {
+            window.Telegram.WebApp.showScanQrPopup();
+        }
     </script>
     <!--
    <a target="_blank" href="https://community.servicenow.com/community?id=community_user_profile&user=4f8156e9db981fc09c9ffb651f961943">ServiceNow Community Profile</a><br>
