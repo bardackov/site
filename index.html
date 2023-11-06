@@ -13,7 +13,9 @@
    <button onclick="toggleMainButtonVisibility()">Main button</button><br><br>
     <button onclick="toggleBackButtonVisibility()">Back button</button><br><br>
     <button onclick="myFunction()">Copy WebApp Object</button><br><br>
-     <button id="scanQRButton">Scan QR code</button><br><br>
+    <button id="scanQRButton">Scan QR Code</button><br><br>
+    <button id="openPopupButton">Open Popup</button><br><br>
+
     <script>
 
 function toggleMainButtonVisibility() {
@@ -53,9 +55,45 @@ function toggleMainButtonVisibility() {
             window.Telegram.WebApp.showScanQrPopup(scanQrPopupParams, handleQRCodeScanned);
         }
 
+        // Define your callback function
+        function handlePopupClosed(buttonId) {
+            // Handle the popup being closed
+            console.log("Popup closed. Button ID: " + buttonId);
+        }
+
+        // Function to open the popup
+        function openPopup() {
+            const popupParams = {
+                // Define parameters for the popup
+                title: "Popup Title",
+                message: "This is a popup message. Click a button below.",
+                buttons: [
+                    {
+                        id: "button1",
+                        type: "default",
+                        text: "Default",
+                    },
+                    {
+                        id: "button2",
+                        type: "ok"
+                    },
+                    {
+                        id: "button2",
+                        type: "destructive",
+                        text: "Remove"
+                    }
+                ]
+            };
+
+            // Call the showPopup method with the specified parameters and callback
+            showPopup(popupParams, handlePopupClosed);
+        }
+
         // Attach an event handler to the button
         const scanQRButton = document.getElementById("scanQRButton");
         scanQRButton.addEventListener("click", openQRScannerPopup);
+        const openPopupButton = document.getElementById("openPopupButton");
+        openPopupButton.addEventListener("click", openPopup);
     </script>
     <!--
    <a target="_blank" href="https://community.servicenow.com/community?id=community_user_profile&user=4f8156e9db981fc09c9ffb651f961943">ServiceNow Community Profile</a><br>
