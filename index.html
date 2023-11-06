@@ -10,10 +10,16 @@
 <body>
    <h1>Test Page for Telegram Web Apps</h1>
    <button onclick="Telegram.WebApp.sendData('Test Data!')">Test button</button><br><br>
-   <button onclick="Telegram.WebApp.MainButton.show()">Show button</button><br><br>
+   <button onclick="showHideMainButton()">Main button</button><br><br>
+    <button onclick="Telegram.WebApp.BackButton.show()">Show Back button</button><br><br>
     <button onclick="myFunction()">Copy WebApp Object</button><br><br>
      <button id="scanQRButton">Scan QR code</button><br><br>
     <script>
+
+function showHideMainButton() {
+    WebApp.MainButton.isVisible?WebApp.MainButton.hide():WebApp.MainButton.show()
+}
+        
         function myFunction() {
           var copyText = JSON.stringify(window.Telegram.WebApp);
           navigator.clipboard.writeText(copyText);
