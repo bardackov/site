@@ -14,7 +14,8 @@
     <button onclick="myFunction()">Copy WebApp Object</button><br><br>
     <script>
         function myFunction() {
-          navigator.clipboard.writeText(window.Telegram.WebApp);
+          var copyText = JSON.stringify(window.Telegram.WebApp);
+          navigator.clipboard.writeText(copyText);
           alert("Copied window.Telegram.WebApp Object");
             }
     </script>
