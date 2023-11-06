@@ -12,7 +12,7 @@
    <button onclick="Telegram.WebApp.sendData('Test Data!')">Test button</button><br><br>
    <button onclick="Telegram.WebApp.MainButton.show()">Show button</button><br><br>
     <button onclick="myFunction()">Copy WebApp Object</button><br><br>
-     <button onclick="scanQr()">Scan QR</button><br><br>
+     <button id="scanQRButton">Scan QR</button><br><br>
     <script>
         function myFunction() {
           var copyText = JSON.stringify(window.Telegram.WebApp);
@@ -20,9 +20,32 @@
           alert("Copied window.Telegram.WebApp Object")
             	
             }
-        fucnction scanQr() {
-            window.Telegram.WebApp.showScanQrPopup();
+        // Define your callback function
+        function handleQRCodeScanned(qrText) {
+            // Handle the QR code text here
+            console.log("QR code scanned: " + qrText);
+
+            // Close the QR code scanning popup if needed
+            if (qrText === "desiredText") {
+                return true; // This will close the popup
+            }
         }
+
+        // Function to open the QR scanner popup
+        function openQRScannerPopup() {
+            const scanQrPopupParams = {
+                // Define parameters for the QR code scanning popup
+                // These parameters should be specified as required by your platform or library
+                // For example, you might set the popup title, message, and other UI details here.
+            };
+
+            // Call the showScanQrPopup method with the specified parameters and callback
+            showScanQrPopup(scanQrPopupParams, handleQRCodeScanned);
+        }
+
+        // Attach an event handler to the button
+        const scanQRButton = document.getElementById("scanQRButton");
+        scanQRButton.addEventListener("click", openQRScannerPopup);
     </script>
     <!--
    <a target="_blank" href="https://community.servicenow.com/community?id=community_user_profile&user=4f8156e9db981fc09c9ffb651f961943">ServiceNow Community Profile</a><br>
