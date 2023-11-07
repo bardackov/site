@@ -9,12 +9,15 @@
 </head>
 <body>
    <h2>Telegram Web Apps Features:</h2>
+     MainButton<button onclick="toggleMainButtonVisibility()">Main button</button><br><br>
+    BackButton<button onclick="toggleBackButtonVisibility()">Back button</button><br><br>
+    PopupButton<button id="openPopupButton">Open Popup</button><br><br>
+    
    <button onclick="Telegram.WebApp.sendData('Test Data!')">Test button</button><br><br>
-   <button onclick="toggleMainButtonVisibility()">Main button</button><br><br>
-    <button onclick="toggleBackButtonVisibility()">Back button</button><br><br>
+  
     <button onclick="myFunction()">Copy WebApp Object</button><br><br>
-    <button id="scanQRButton">Scan QR Code</button><br><br>
-    <button id="openPopupButton">Open Popup</button><br><br>
+    ScanQrPopupParams<button id="scanQRButton">Scan QR Code</button><br><br>
+    
     <h3>HapticFeedback</h3>
     <h4>impactOccurred</h4>
     <button onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light')">light</button><br>
