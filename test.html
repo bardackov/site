@@ -21,13 +21,16 @@
         const telegram_post = forward_from_chat_username+"/"+forward_from_message_id
 
     // Get the script element
-    var telegramScript = document.querySelector('script[data-telegram-post]');
-
-    // Set the data-telegram-post attribute dynamically
-    telegramScript.setAttribute('data-telegram-post', telegram_post);
+    const script = document.createElement('script')
+    script.async = true
+    script.src = "https://telegram.org/js/telegram-widget.js?22"
+    script.dataset.width = "100%"
+    script. script.dataset.telegramPost = telegram_post; 
+    document.body.appendChild(script);
+    
 </script>
 
-   <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-post="doucommunity/6893" data-width="100%"></script>
+  <!-- <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-post="doucommunity/6893" data-width="100%"></script>-->
     
    <h1>Tag and save your post</h1>
     <h3>select an existing Tag from the list:</h3>
