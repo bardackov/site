@@ -8,5 +8,12 @@
 </head>
 <body>
    <h1>Tag and save your post</h1>
+    <button onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light')">TagA</button><br>
+    <button onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium')">TagB</button><br>
+<form action="/action_page.php">
+  <label for="fname">Create new Tag:</label>
+  <input type="text" id="fname" name="fname"><br><br>
+  <input type="submit" value="Save">
+</form>
 </body>
 </html>
