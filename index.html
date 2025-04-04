@@ -12,6 +12,7 @@
      MainButton<button onclick="toggleMainButtonVisibility()">Main button</button><br><br>
     BackButton<button onclick="toggleBackButtonVisibility()">Back button</button><br><br>
     PopupButton<button id="openPopupButton">Open Popup</button><br><br>
+    <button id="shareButton">Поділитися в Instagram Stories</button>
     
    <button onclick="Telegram.WebApp.sendData('Test Data!')">Test button</button><br><br>
   
@@ -34,6 +35,20 @@
     <a href="javascript:Telegram.WebApp.openLink('https://telegra.ph/Roadmap-06-18-5',{try_instant_view:true});">Chessio Roadmap</a>
 
     <script>
+
+document.getElementById("shareButton").addEventListener("click", function() {
+      // Base64 рядок зображення має бути у форматі data URI, наприклад:
+      var base64Image = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII"; // Замініть на своє зображення
+      
+      // URL‑кодоване зображення
+      var encodedImage = encodeURIComponent(base64Image);
+      
+      // Формування deep link URL для Instagram Stories
+      var url = "instagram-stories://share?backgroundImage=" + encodedImage;
+      
+      // Перенаправлення на deep link. Якщо додаток Instagram встановлено – він відкриється.
+      window.location.href = url;
+    });
 
 function toggleMainButtonVisibility() {
     Telegram.WebApp.MainButton.isVisible?Telegram.WebApp.MainButton.hide():Telegram.WebApp.MainButton.show();
