@@ -13,6 +13,8 @@
     BackButton<button onclick="toggleBackButtonVisibility()">Back button</button><br><br>
     PopupButton<button id="openPopupButton">Open Popup</button><br><br>
     <button id="shareButton">Поділитися в Instagram Stories</button>
+      <button id="shareButton2">Поділитися контентом</button>
+
     
    <button onclick="Telegram.WebApp.sendData('Test Data!')">Test button</button><br><br>
   
@@ -35,6 +37,34 @@
     <a href="javascript:Telegram.WebApp.openLink('https://telegra.ph/Roadmap-06-18-5',{try_instant_view:true});">Chessio Roadmap</a>
 
     <script>
+
+        document.getElementById('shareButton2').addEventListener('click', async () => {
+      try {
+        // Завантаження зображення з Picsum
+        const imageUrl = 'https://picsum.photos/150';
+        const response = await fetch(imageUrl);
+        const blob = await response.blob();
+        const file = new File([blob], 'image.jpg', { type: blob.type });
+        
+        // Підготовка даних для спільного використання
+        const shareData = {
+          title: 'Це заголовок',
+          text: 'Це текст, який ви хочете поділитися.',
+          url: 'https://example.com',
+          files: [file]  // Передаємо файл зображення
+        };
+        
+        // Перевірка підтримки передачі файлів у браузері
+        if (navigator.canShare && navigator.canShare({ files: shareData.files })) {
+          await navigator.share(shareData);
+          console.log('Контент успішно поділено.');
+        } else {
+          console.error('Спільне використання файлів не підтримується у цьому браузері.');
+        }
+      } catch (error) {
+        console.error('Помилка під час спільного використання:', error);
+      }
+    });
 
 document.getElementById("shareButton").addEventListener("click", function() {
       // Base64 рядок зображення має бути у форматі data URI, наприклад:
