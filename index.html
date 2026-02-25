@@ -56,6 +56,11 @@
             border: 2px solid var(--btn-color);
         }
 
+        .btn-green { background-color: #34c759; color: #ffffff; }
+        .btn-red { background-color: #ff3b30; color: #ffffff; }
+        .btn-orange { background-color: #ff9500; color: #ffffff; }
+        .btn-blue { background-color: #007aff; color: #ffffff; }
+
         .status {
             font-family: monospace;
             font-size: 12px;
@@ -85,6 +90,20 @@
         <button onclick="toggleSecondaryButton()">Toggle Secondary Button</button>
         <button onclick="moveSecondaryButton()">Change Sec. Button Pos</button>
         <button onclick="setSettingsButton()">Show Settings Button</button>
+    </div>
+
+    <div class="card">
+        <h3>1.1 Colored Buttons / Theme Test</h3>
+        <p class="status">Applies custom Main/Secondary button colors for quick Telegram bot testing.</p>
+        <div class="row">
+            <button class="btn-green" onclick="applyButtonPreset('success')">Success</button>
+            <button class="btn-red" onclick="applyButtonPreset('danger')">Danger</button>
+        </div>
+        <div class="row">
+            <button class="btn-orange" onclick="applyButtonPreset('warning')">Warning</button>
+            <button class="btn-blue" onclick="applyButtonPreset('primary')">Primary</button>
+        </div>
+        <button class="secondary" onclick="resetButtonPreset()">Reset to Telegram Theme</button>
     </div>
 
     <div class="card">
@@ -184,6 +203,62 @@
              tg.SettingsButton.show().onClick(() => {
                  tg.showAlert("Settings opened!");
              });
+        }
+
+        function applyButtonPreset(preset) {
+            const colorMap = {
+                success: { main: '#34c759', secondary: '#2fb350', text: '#ffffff', label: 'SUCCESS' },
+                danger: { main: '#ff3b30', secondary: '#d92d23', text: '#ffffff', label: 'DANGER' },
+                warning: { main: '#ff9500', secondary: '#d97f00', text: '#ffffff', label: 'WARNING' },
+                primary: { main: '#007aff', secondary: '#0062cc', text: '#ffffff', label: 'PRIMARY' }
+            };
+
+            const set = colorMap[preset];
+            if (!set) return;
+
+            tg.MainButton
+                .setParams({
+                    text: `MAIN ${set.label}`,
+                    color: set.main,
+                    text_color: set.text,
+                    is_active: true,
+                    is_visible: true
+                })
+                .onClick(() => tg.showAlert(`Main: ${set.label}`));
+
+            if (tg.isVersionAtLeast('7.10')) {
+                tg.SecondaryButton
+                    .setParams({
+                        text: `SEC ${set.label}`,
+                        color: set.secondary,
+                        text_color: set.text,
+                        is_active: true,
+                        is_visible: true,
+                        position: 'bottom'
+                    })
+                    .onClick(() => tg.showAlert(`Secondary: ${set.label}`));
+            }
+
+            tg.HapticFeedback.notificationOccurred('success');
+        }
+
+        function resetButtonPreset() {
+            tg.MainButton.setParams({
+                text: 'PROCESS ORDER',
+                color: tg.themeParams.button_color || '#3390ec',
+                text_color: tg.themeParams.button_text_color || '#ffffff',
+                is_visible: false
+            });
+
+            if (tg.isVersionAtLeast('7.10')) {
+                tg.SecondaryButton.setParams({
+                    text: 'CANCEL',
+                    color: tg.themeParams.button_color || '#3390ec',
+                    text_color: tg.themeParams.button_text_color || '#ffffff',
+                    is_visible: false,
+                    position: 'bottom'
+                });
+            }
         }
 
         // --- 2. CLOUD STORAGE LOGIC ---
