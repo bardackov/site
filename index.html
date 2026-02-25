@@ -260,22 +260,6 @@
     </div>
 
     <div class="card">
-        <h2>Button Color Presets</h2>
-        <p>Quickly test colored Telegram Main/Secondary buttons.</p>
-        <div class="grid" style="margin-top:10px;">
-            <div class="row">
-                <button class="btn-success" onclick="applyButtonPreset('success')">Success</button>
-                <button class="btn-danger" onclick="applyButtonPreset('danger')">Danger</button>
-            </div>
-            <div class="row">
-                <button class="btn-warning" onclick="applyButtonPreset('warning')">Warning</button>
-                <button onclick="applyButtonPreset('primary')">Primary</button>
-            </div>
-            <button class="secondary" onclick="resetButtonPreset()">Reset Telegram Buttons</button>
-        </div>
-    </div>
-
-    <div class="card">
         <h2>Session</h2>
         <div id="debug" class="status mono">Loading...</div>
     </div>
@@ -426,62 +410,6 @@
             setFormFromConfig(defaultConfig);
             setStatus('Defaults restored');
             tg.HapticFeedback.selectionChanged();
-        }
-
-        function applyButtonPreset(preset) {
-            const colorMap = {
-                success: { main: '#34c759', secondary: '#2fb350', text: '#ffffff', label: 'SUCCESS' },
-                danger: { main: '#ff3b30', secondary: '#d92d23', text: '#ffffff', label: 'DANGER' },
-                warning: { main: '#ff9500', secondary: '#d97f00', text: '#111111', label: 'WARNING' },
-                primary: { main: '#007aff', secondary: '#0062cc', text: '#ffffff', label: 'PRIMARY' }
-            };
-
-            const set = colorMap[preset];
-            if (!set) return;
-
-            tg.MainButton.setParams({
-                text: `Save & Send (${set.label})`,
-                color: set.main,
-                text_color: set.text,
-                is_visible: true,
-                is_active: true
-            });
-
-            if (tg.isVersionAtLeast('7.10')) {
-                tg.SecondaryButton.setParams({
-                    text: `Close (${set.label})`,
-                    color: set.secondary,
-                    text_color: set.text,
-                    is_visible: true,
-                    is_active: true,
-                    position: 'bottom'
-                });
-            }
-
-            setStatus(`Applied ${set.label} button preset`);
-        }
-
-        function resetButtonPreset() {
-            tg.MainButton.setParams({
-                text: 'Save & Send',
-                color: tg.themeParams.button_color || '#007aff',
-                text_color: tg.themeParams.button_text_color || '#ffffff',
-                is_visible: true,
-                is_active: true
-            });
-
-            if (tg.isVersionAtLeast('7.10')) {
-                tg.SecondaryButton.setParams({
-                    text: 'Close',
-                    color: tg.themeParams.button_color || '#007aff',
-                    text_color: tg.themeParams.button_text_color || '#ffffff',
-                    is_visible: true,
-                    is_active: true,
-                    position: 'bottom'
-                });
-            }
-
-            setStatus('Telegram button theme restored');
         }
 
         setFormFromConfig(defaultConfig);
