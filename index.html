@@ -4,346 +4,489 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TMA Ultimate Test Site v8.0+</title>
+    <title>OpenClaw Assistant Config</title>
     <style>
         :root {
             --bg-color: var(--tg-theme-bg-color, #ffffff);
-            --text-color: var(--tg-theme-text-color, #222222);
-            --btn-color: var(--tg-theme-button-color, #3390ec);
+            --text-color: var(--tg-theme-text-color, #1f1f1f);
+            --hint-color: var(--tg-theme-hint-color, #8e8e93);
+            --link-color: var(--tg-theme-link-color, #007aff);
+            --btn-color: var(--tg-theme-button-color, #007aff);
             --btn-text: var(--tg-theme-button-text-color, #ffffff);
-            --hint-color: var(--tg-theme-hint-color, #a8a8a8);
-            --section-bg: var(--tg-theme-secondary-bg-color, #f4f4f5);
+            --section-bg: var(--tg-theme-secondary-bg-color, #f2f2f7);
+            --accent-strong: #0a84ff;
+            --success: #34c759;
+            --danger: #ff3b30;
+            --warning: #ff9500;
+            --line: rgba(120, 120, 128, 0.2);
         }
+
+        * { box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            padding: 16px;
             margin: 0;
-            padding-bottom: 100px; /* Space for main buttons */
+            padding: 14px;
+            padding-bottom: 120px;
+            background: radial-gradient(1200px 400px at 20% -10%, rgba(10,132,255,0.14), transparent 40%), var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        h2, h3 { margin-top: 0; }
-        
+        h1 {
+            margin: 0 0 4px;
+            font-size: 22px;
+            line-height: 1.2;
+        }
+
+        h2 {
+            margin: 0 0 10px;
+            font-size: 16px;
+        }
+
+        p {
+            margin: 0;
+            font-size: 13px;
+            color: var(--hint-color);
+        }
+
         .card {
             background: var(--section-bg);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 14px;
+            margin-top: 12px;
+            backdrop-filter: blur(4px);
+        }
+
+        .header {
+            margin-bottom: 8px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .row > * { flex: 1; }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: var(--hint-color);
+            margin-bottom: 4px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        textarea {
+            min-height: 78px;
+            resize: vertical;
+        }
+
+        .switch {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 10px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--bg-color);
+        }
+
+        .switch label {
+            margin: 0;
+            color: var(--text-color);
+            font-size: 14px;
+        }
+
+        .switch input {
+            width: auto;
+            transform: scale(1.2);
         }
 
         button {
-            display: block;
             width: 100%;
-            padding: 14px;
-            margin-bottom: 8px;
             border: none;
             border-radius: 10px;
-            background-color: var(--btn-color);
-            color: var(--btn-text);
-            font-size: 16px;
+            padding: 11px;
+            font-size: 14px;
             font-weight: 600;
+            background: var(--btn-color);
+            color: var(--btn-text);
             cursor: pointer;
-            transition: opacity 0.2s;
         }
 
-        button:active { opacity: 0.8; }
-        
         button.secondary {
-            background-color: transparent;
-            color: var(--btn-color);
-            border: 2px solid var(--btn-color);
+            background: transparent;
+            color: var(--link-color);
+            border: 1px solid var(--link-color);
         }
 
-        .btn-green { background-color: #34c759; color: #ffffff; }
-        .btn-red { background-color: #ff3b30; color: #ffffff; }
-        .btn-orange { background-color: #ff9500; color: #ffffff; }
-        .btn-blue { background-color: #007aff; color: #ffffff; }
+        .btn-success { background: var(--success); color: #fff; }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-warning { background: var(--warning); color: #111; }
 
         .status {
-            font-family: monospace;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px dashed var(--line);
             font-size: 12px;
             color: var(--hint-color);
-            word-break: break-all;
+            word-break: break-word;
         }
-        
-        .row { display: flex; gap: 10px; }
-        .row button { flex: 1; }
+
+        .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
     </style>
 </head>
 <body>
+    <div class="header">
+        <h1>OpenClaw Config</h1>
+        <p>Configure your assistant behavior and sync settings with your Telegram bot.</p>
+    </div>
 
     <div class="card">
-        <h3>System Info</h3>
-        <div id="debug" class="status">Loading...</div>
-        <div class="row" style="margin-top:10px;">
-            <button class="secondary" onclick="tg.expand()">Expand</button>
-            <button class="secondary" onclick="tg.close()">Close</button>
+        <h2>Assistant Profile</h2>
+        <div class="grid">
+            <div>
+                <label for="assistantName">Assistant Name</label>
+                <input id="assistantName" type="text" placeholder="OpenClaw Assistant">
+            </div>
+            <div>
+                <label for="language">Language</label>
+                <select id="language">
+                    <option value="en">English</option>
+                    <option value="uk">Ukrainian</option>
+                    <option value="ru">Russian</option>
+                </select>
+            </div>
+            <div>
+                <label for="systemPrompt">System Prompt</label>
+                <textarea id="systemPrompt" placeholder="You are OpenClaw assistant..."></textarea>
+            </div>
         </div>
     </div>
 
     <div class="card">
-        <h3>1. Main & Secondary Buttons</h3>
-        <p class="status">Secondary Button requires v7.10+</p>
-        <button onclick="toggleMainButton()">Toggle Main Button</button>
-        <button onclick="toggleSecondaryButton()">Toggle Secondary Button</button>
-        <button onclick="moveSecondaryButton()">Change Sec. Button Pos</button>
-        <button onclick="setSettingsButton()">Show Settings Button</button>
+        <h2>Model Settings</h2>
+        <div class="grid">
+            <div>
+                <label for="model">Model</label>
+                <select id="model">
+                    <option value="gpt-4o-mini">gpt-4o-mini</option>
+                    <option value="gpt-4.1-mini">gpt-4.1-mini</option>
+                    <option value="gpt-4.1">gpt-4.1</option>
+                </select>
+            </div>
+            <div class="row">
+                <div>
+                    <label for="temperature">Temperature (0-2)</label>
+                    <input id="temperature" type="number" min="0" max="2" step="0.1" value="0.7">
+                </div>
+                <div>
+                    <label for="maxTokens">Max Tokens</label>
+                    <input id="maxTokens" type="number" min="64" max="8192" step="1" value="1024">
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="card">
-        <h3>1.1 Colored Buttons / Theme Test</h3>
-        <p class="status">Applies custom Main/Secondary button colors for quick Telegram bot testing.</p>
-        <div class="row">
-            <button class="btn-green" onclick="applyButtonPreset('success')">Success</button>
-            <button class="btn-red" onclick="applyButtonPreset('danger')">Danger</button>
+        <h2>Behavior</h2>
+        <div class="grid">
+            <div class="switch">
+                <label for="memoryEnabled">Enable Memory</label>
+                <input id="memoryEnabled" type="checkbox" checked>
+            </div>
+            <div class="switch">
+                <label for="webSearchEnabled">Enable Web Search</label>
+                <input id="webSearchEnabled" type="checkbox">
+            </div>
+            <div class="switch">
+                <label for="safeMode">Safe Mode</label>
+                <input id="safeMode" type="checkbox" checked>
+            </div>
+            <div class="switch">
+                <label for="autoReply">Auto Reply</label>
+                <input id="autoReply" type="checkbox">
+            </div>
         </div>
-        <div class="row">
-            <button class="btn-orange" onclick="applyButtonPreset('warning')">Warning</button>
-            <button class="btn-blue" onclick="applyButtonPreset('primary')">Primary</button>
-        </div>
-        <button class="secondary" onclick="resetButtonPreset()">Reset to Telegram Theme</button>
     </div>
 
     <div class="card">
-        <h3>2. Cloud Storage (Key-Value)</h3>
-        <input type="text" id="cloudInput" placeholder="Enter value..." style="width:100%; padding:10px; box-sizing:border-box; margin-bottom:10px; border-radius:8px; border:1px solid #ccc;">
-        <div class="row">
-            <button onclick="saveCloud()">Save 'test_key'</button>
-            <button onclick="loadCloud()">Load 'test_key'</button>
+        <h2>Notification & Access</h2>
+        <div class="grid">
+            <div>
+                <label for="adminUserId">Admin Telegram User ID</label>
+                <input id="adminUserId" type="text" placeholder="123456789">
+            </div>
+            <div>
+                <label for="allowedChats">Allowed Chat IDs (comma separated)</label>
+                <input id="allowedChats" type="text" placeholder="-10012345, -10098765">
+            </div>
         </div>
-        <div class="row">
-             <button class="secondary" onclick="removeCloud()">Delete Key</button>
-             <button class="secondary" onclick="getKeys()">List Keys</button>
-        </div>
-        <div id="cloudStatus" class="status"></div>
     </div>
 
     <div class="card">
-        <h3>3. Biometrics Manager</h3>
-        <div id="bioStatus" class="status">Not initialized</div>
-        <button onclick="initBiometrics()">Init & Request Access</button>
-        <button onclick="authBiometrics()">Authenticate User</button>
+        <h2>Actions</h2>
+        <div class="grid">
+            <div class="row">
+                <button onclick="saveConfig()">Save to Cloud</button>
+                <button class="secondary" onclick="loadConfig()">Load</button>
+            </div>
+            <div class="row">
+                <button class="btn-success" onclick="sendConfigToBot()">Send to Bot</button>
+                <button class="btn-danger" onclick="resetDefaults()">Reset</button>
+            </div>
+        </div>
+        <div id="status" class="status mono">Ready</div>
     </div>
 
     <div class="card">
-        <h3>4. Utilities & Haptics</h3>
-        <div class="row">
-            <button onclick="tg.HapticFeedback.notificationOccurred('success')">Success</button>
-            <button onclick="tg.HapticFeedback.notificationOccurred('error')">Error</button>
+        <h2>Button Color Presets</h2>
+        <p>Quickly test colored Telegram Main/Secondary buttons.</p>
+        <div class="grid" style="margin-top:10px;">
+            <div class="row">
+                <button class="btn-success" onclick="applyButtonPreset('success')">Success</button>
+                <button class="btn-danger" onclick="applyButtonPreset('danger')">Danger</button>
+            </div>
+            <div class="row">
+                <button class="btn-warning" onclick="applyButtonPreset('warning')">Warning</button>
+                <button onclick="applyButtonPreset('primary')">Primary</button>
+            </div>
+            <button class="secondary" onclick="resetButtonPreset()">Reset Telegram Buttons</button>
         </div>
-        <div class="row">
-            <button onclick="tg.HapticFeedback.impactOccurred('medium')">Impact</button>
-            <button onclick="tg.HapticFeedback.selectionChanged()">Selection</button>
-        </div>
-        <button onclick="scanQR()">Scan QR Code</button>
-        <button onclick="requestWriteAccess()">Request Write Access</button>
-        <button onclick="addToHome()">Add to Home Screen (v8.0)</button>
+    </div>
+
+    <div class="card">
+        <h2>Session</h2>
+        <div id="debug" class="status mono">Loading...</div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
+        const STORAGE_KEY = 'openclaw_config_v1';
+        const statusEl = document.getElementById('status');
         const debugEl = document.getElementById('debug');
-        
-        // --- INITIALIZATION ---
+
+        const defaultConfig = {
+            assistantName: 'OpenClaw Assistant',
+            language: 'en',
+            systemPrompt: 'You are OpenClaw assistant. Be concise, correct and helpful.',
+            model: 'gpt-4o-mini',
+            temperature: 0.7,
+            maxTokens: 1024,
+            memoryEnabled: true,
+            webSearchEnabled: false,
+            safeMode: true,
+            autoReply: false,
+            adminUserId: '',
+            allowedChats: ''
+        };
+
         tg.ready();
-        tg.enableClosingConfirmation(); // Prevent swipe-to-close
-        
-        // Update debug info
+        tg.expand();
+
+        tg.MainButton.setParams({
+            text: 'Save & Send',
+            is_visible: true,
+            is_active: true
+        });
+        tg.MainButton.onClick(() => {
+            const cfg = getConfigFromForm();
+            saveConfig(() => sendConfigToBot(cfg));
+        });
+
+        if (tg.isVersionAtLeast('7.10')) {
+            tg.SecondaryButton.setParams({
+                text: 'Close',
+                is_visible: true,
+                is_active: true,
+                position: 'bottom'
+            });
+            tg.SecondaryButton.onClick(() => tg.close());
+        }
+
+        function setStatus(text) {
+            statusEl.textContent = `[${new Date().toLocaleTimeString()}] ${text}`;
+        }
+
         function updateDebug() {
-            debugEl.innerHTML = `
-                Ver: ${tg.version}<br>
-                Platform: ${tg.platform}<br>
-                Theme: ${tg.colorScheme}<br>
-                Expanded: ${tg.isExpanded}
-            `;
-        }
-        updateDebug();
-        setInterval(updateDebug, 2000);
-
-        // --- 1. BUTTONS LOGIC ---
-        let mainBtnState = false;
-        function toggleMainButton() {
-            if (mainBtnState) {
-                tg.MainButton.hide();
-            } else {
-                tg.MainButton.setText("PROCESS ORDER").show().onClick(() => {
-                    tg.showAlert("Main Button Clicked!");
-                });
-            }
-            mainBtnState = !mainBtnState;
+            debugEl.innerHTML =
+                `Version: ${tg.version}<br>` +
+                `Platform: ${tg.platform}<br>` +
+                `Color Scheme: ${tg.colorScheme}<br>` +
+                `User ID: ${tg.initDataUnsafe?.user?.id || 'n/a'}<br>` +
+                `Chat Type: ${tg.initDataUnsafe?.chat_type || 'n/a'}`;
         }
 
-        let secBtnState = false;
-        function toggleSecondaryButton() {
-            if (!tg.isVersionAtLeast('7.10')) return alert('Secondary Button requires v7.10');
-            
-            if (secBtnState) {
-                tg.SecondaryButton.hide();
-            } else {
-                tg.SecondaryButton.setText("CANCEL").show().onClick(() => {
-                    tg.showAlert("Secondary Button Clicked!");
-                });
-            }
-            secBtnState = !secBtnState;
+        function getConfigFromForm() {
+            return {
+                assistantName: document.getElementById('assistantName').value.trim(),
+                language: document.getElementById('language').value,
+                systemPrompt: document.getElementById('systemPrompt').value.trim(),
+                model: document.getElementById('model').value,
+                temperature: Number(document.getElementById('temperature').value),
+                maxTokens: Number(document.getElementById('maxTokens').value),
+                memoryEnabled: document.getElementById('memoryEnabled').checked,
+                webSearchEnabled: document.getElementById('webSearchEnabled').checked,
+                safeMode: document.getElementById('safeMode').checked,
+                autoReply: document.getElementById('autoReply').checked,
+                adminUserId: document.getElementById('adminUserId').value.trim(),
+                allowedChats: document.getElementById('allowedChats').value.trim()
+            };
         }
 
-        let secBtnPos = 'bottom';
-        function moveSecondaryButton() {
-            if (!tg.isVersionAtLeast('7.10')) return alert('Requires v7.10');
-            
-            // Toggle position
-            secBtnPos = (secBtnPos === 'bottom') ? 'top' : (secBtnPos === 'top' ? 'left' : 'bottom');
-            tg.SecondaryButton.setParams({ position: secBtnPos });
-            tg.showAlert(`Position set to: ${secBtnPos}`);
+        function setFormFromConfig(cfg) {
+            document.getElementById('assistantName').value = cfg.assistantName || '';
+            document.getElementById('language').value = cfg.language || 'en';
+            document.getElementById('systemPrompt').value = cfg.systemPrompt || '';
+            document.getElementById('model').value = cfg.model || 'gpt-4o-mini';
+            document.getElementById('temperature').value = Number.isFinite(cfg.temperature) ? cfg.temperature : 0.7;
+            document.getElementById('maxTokens').value = Number.isFinite(cfg.maxTokens) ? cfg.maxTokens : 1024;
+            document.getElementById('memoryEnabled').checked = Boolean(cfg.memoryEnabled);
+            document.getElementById('webSearchEnabled').checked = Boolean(cfg.webSearchEnabled);
+            document.getElementById('safeMode').checked = Boolean(cfg.safeMode);
+            document.getElementById('autoReply').checked = Boolean(cfg.autoReply);
+            document.getElementById('adminUserId').value = cfg.adminUserId || '';
+            document.getElementById('allowedChats').value = cfg.allowedChats || '';
         }
-        
-        function setSettingsButton() {
-             tg.SettingsButton.show().onClick(() => {
-                 tg.showAlert("Settings opened!");
-             });
+
+        function saveConfig(afterSave) {
+            const cfg = getConfigFromForm();
+            const value = JSON.stringify(cfg);
+
+            tg.CloudStorage.setItem(STORAGE_KEY, value, (err) => {
+                if (err) {
+                    setStatus(`Save failed: ${err}`);
+                    return;
+                }
+                setStatus('Saved to CloudStorage');
+                tg.HapticFeedback.notificationOccurred('success');
+                if (typeof afterSave === 'function') afterSave();
+            });
+        }
+
+        function loadConfig() {
+            tg.CloudStorage.getItem(STORAGE_KEY, (err, value) => {
+                if (err) {
+                    setStatus(`Load failed: ${err}`);
+                    return;
+                }
+
+                if (!value) {
+                    setFormFromConfig(defaultConfig);
+                    setStatus('No saved config found. Defaults loaded.');
+                    return;
+                }
+
+                try {
+                    const cfg = JSON.parse(value);
+                    setFormFromConfig({ ...defaultConfig, ...cfg });
+                    setStatus('Loaded config from CloudStorage');
+                } catch (e) {
+                    setStatus('Config parse error. Defaults loaded.');
+                    setFormFromConfig(defaultConfig);
+                }
+            });
+        }
+
+        function sendConfigToBot(configOverride) {
+            const cfg = configOverride || getConfigFromForm();
+            const payload = {
+                type: 'openclaw_config_update',
+                ts: Date.now(),
+                userId: tg.initDataUnsafe?.user?.id || null,
+                config: cfg
+            };
+
+            tg.sendData(JSON.stringify(payload));
+            setStatus('Config sent to bot via sendData');
+            tg.HapticFeedback.impactOccurred('medium');
+        }
+
+        function resetDefaults() {
+            setFormFromConfig(defaultConfig);
+            setStatus('Defaults restored');
+            tg.HapticFeedback.selectionChanged();
         }
 
         function applyButtonPreset(preset) {
             const colorMap = {
                 success: { main: '#34c759', secondary: '#2fb350', text: '#ffffff', label: 'SUCCESS' },
                 danger: { main: '#ff3b30', secondary: '#d92d23', text: '#ffffff', label: 'DANGER' },
-                warning: { main: '#ff9500', secondary: '#d97f00', text: '#ffffff', label: 'WARNING' },
+                warning: { main: '#ff9500', secondary: '#d97f00', text: '#111111', label: 'WARNING' },
                 primary: { main: '#007aff', secondary: '#0062cc', text: '#ffffff', label: 'PRIMARY' }
             };
 
             const set = colorMap[preset];
             if (!set) return;
 
-            tg.MainButton
-                .setParams({
-                    text: `MAIN ${set.label}`,
-                    color: set.main,
-                    text_color: set.text,
-                    is_active: true,
-                    is_visible: true
-                })
-                .onClick(() => tg.showAlert(`Main: ${set.label}`));
-
-            if (tg.isVersionAtLeast('7.10')) {
-                tg.SecondaryButton
-                    .setParams({
-                        text: `SEC ${set.label}`,
-                        color: set.secondary,
-                        text_color: set.text,
-                        is_active: true,
-                        is_visible: true,
-                        position: 'bottom'
-                    })
-                    .onClick(() => tg.showAlert(`Secondary: ${set.label}`));
-            }
-
-            tg.HapticFeedback.notificationOccurred('success');
-        }
-
-        function resetButtonPreset() {
             tg.MainButton.setParams({
-                text: 'PROCESS ORDER',
-                color: tg.themeParams.button_color || '#3390ec',
-                text_color: tg.themeParams.button_text_color || '#ffffff',
-                is_visible: false
+                text: `Save & Send (${set.label})`,
+                color: set.main,
+                text_color: set.text,
+                is_visible: true,
+                is_active: true
             });
 
             if (tg.isVersionAtLeast('7.10')) {
                 tg.SecondaryButton.setParams({
-                    text: 'CANCEL',
-                    color: tg.themeParams.button_color || '#3390ec',
-                    text_color: tg.themeParams.button_text_color || '#ffffff',
-                    is_visible: false,
+                    text: `Close (${set.label})`,
+                    color: set.secondary,
+                    text_color: set.text,
+                    is_visible: true,
+                    is_active: true,
                     position: 'bottom'
                 });
             }
+
+            setStatus(`Applied ${set.label} button preset`);
         }
 
-        // --- 2. CLOUD STORAGE LOGIC ---
-        function saveCloud() {
-            const val = document.getElementById('cloudInput').value;
-            tg.CloudStorage.setItem('test_key', val, (err, stored) => {
-                if(err) return alert("Error: "+err);
-                document.getElementById('cloudStatus').innerText = "Saved: " + (stored ? 'YES' : 'NO');
+        function resetButtonPreset() {
+            tg.MainButton.setParams({
+                text: 'Save & Send',
+                color: tg.themeParams.button_color || '#007aff',
+                text_color: tg.themeParams.button_text_color || '#ffffff',
+                is_visible: true,
+                is_active: true
             });
-        }
-        
-        function loadCloud() {
-            tg.CloudStorage.getItem('test_key', (err, val) => {
-                if(err) return alert("Error: "+err);
-                document.getElementById('cloudStatus').innerText = "Loaded Value: " + val;
-                if(val) document.getElementById('cloudInput').value = val;
-            });
-        }
-        
-        function removeCloud() {
-            tg.CloudStorage.removeItem('test_key', (err, deleted) => {
-                 document.getElementById('cloudStatus').innerText = "Deleted: " + (deleted ? 'YES' : 'NO');
-                 document.getElementById('cloudInput').value = "";
-            });
-        }
 
-        function getKeys() {
-            tg.CloudStorage.getKeys((err, keys) => {
-                if(err) return alert(err);
-                alert("Keys: " + JSON.stringify(keys));
-            });
-        }
-
-        // --- 3. BIOMETRICS LOGIC ---
-        function initBiometrics() {
-            if (!tg.BiometricManager) return alert("Biometrics not supported on this device/version");
-            
-            tg.BiometricManager.init(() => {
-                const bio = tg.BiometricManager;
-                document.getElementById('bioStatus').innerHTML = `
-                    Available: ${bio.isBiometricAvailable}<br>
-                    Access Granted: ${bio.isAccessGranted}<br>
-                    Type: ${bio.biometricType}
-                `;
-                
-                if(!bio.isAccessGranted) {
-                    bio.requestAccess({reason: "Authenticate for Demo"}, (granted) => {
-                        if(granted) alert("Access Granted!");
-                    });
-                }
-            });
-        }
-
-        function authBiometrics() {
-            const bio = tg.BiometricManager;
-            if(!bio.isInited) return alert("Init first!");
-            
-            bio.authenticate({reason: "Verify Identity"}, (success, token) => {
-                if(success) tg.showAlert("Authenticated successfully!");
-                else tg.showAlert("Authentication failed.");
-            });
-        }
-
-        // --- 4. UTILITIES ---
-        function scanQR() {
-            tg.showScanQrPopup({text: "Scan a QR Code"}, (content) => {
-                tg.closeScanQrPopup();
-                tg.showAlert("Scanned: " + content);
-                return true;
-            });
-        }
-
-        function requestWriteAccess() {
-             tg.requestWriteAccess((allowed) => {
-                 tg.showAlert("Write permission: " + allowed);
-             });
-        }
-
-        function addToHome() {
-            if(tg.isVersionAtLeast('8.0')) {
-                tg.addToHomeScreen();
-            } else {
-                alert("Requires v8.0");
+            if (tg.isVersionAtLeast('7.10')) {
+                tg.SecondaryButton.setParams({
+                    text: 'Close',
+                    color: tg.themeParams.button_color || '#007aff',
+                    text_color: tg.themeParams.button_text_color || '#ffffff',
+                    is_visible: true,
+                    is_active: true,
+                    position: 'bottom'
+                });
             }
+
+            setStatus('Telegram button theme restored');
         }
+
+        setFormFromConfig(defaultConfig);
+        loadConfig();
+        updateDebug();
     </script>
 </body>
 </html>
